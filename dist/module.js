@@ -12,15 +12,14 @@ var _serverConfigModule = require('@modern-mean/server-config-module');
 class MMBase {
 
   constructor(...args) {
-    console.log(args);
 
     //Initiate config
-    let configModule = new _serverConfigModule.MMConfig(config);
-    configModule.merge(configMerge);
+    let configModule = new _serverConfigModule.MMConfig(args[0]);
+    configModule.merge();
     this.config = configModule;
 
     //Initaite logger
-    let loggerModule = new _serverLoggerModule.MMLogger(this.config.logs);
+    let loggerModule = new _serverLoggerModule.MMLogger(args[1]);
     this.logger = loggerModule;
   }
 
