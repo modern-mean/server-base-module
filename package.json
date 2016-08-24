@@ -1,0 +1,30 @@
+{
+  "name": "@modern-mean/server-base-module",
+  "version": "0.0.1",
+  "description": "Base server module",
+  "keywords": "",
+  "main": "index.js",
+  "scripts": {
+    "coverage": "gulp test:coverage",
+    "test": "gulp test",
+    "build": "gulp",
+    "preversion": "npm test",
+    "version": "npm run build && git add -A",
+    "postversion": "git push && git push --tags && npm publish --access public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/modern-mean/server-base-module.git"
+  },
+  "author": "Andrew Throener",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/modern-mean/server-base-module/issues"
+  },
+  "homepage": "https://github.com/modern-mean/server-base-module#readme",
+  "dependencies": {
+    "@modern-mean/build-gulp": "0.0.22",
+    "@modern-mean/server-config-module": "0.0.6",
+    "@modern-mean/server-logger-module": "0.0.8"
+  }
+}
