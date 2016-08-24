@@ -17,7 +17,7 @@ loggerConfig = {
   }
 };
 
-describe('/src/module.es6', () => {
+describe('/src/module', () => {
 
   beforeEach(() => {
     return sandbox = sinon.sandbox.create();
@@ -31,19 +31,19 @@ describe('/src/module.es6', () => {
 
     it('should return an object', () => {
       config = { okie: 'dokie' };
-      moduleTest = new MMBase(config, loggerConfig);
+      moduleTest = new MMBase({ config: config, logger: loggerConfig });
       return moduleTest.should.be.an('object');
     });
 
     it('should create configuration module', () => {
       config = { okie: 'dokie' };
-      moduleTest = new MMBase(config, loggerConfig);
+      moduleTest = new MMBase({ config: config, logger: loggerConfig });
       return expect(moduleTest.getConfigModule() instanceof MMConfig).to.equal(true);
     });
 
     it('should create a logger module', () => {
       config = { okie: 'dokie' };
-      moduleTest = new MMBase(config, loggerConfig);
+      moduleTest = new MMBase({ config: config, logger: loggerConfig });
       return expect(moduleTest.getLoggerModule() instanceof MMLogger).to.equal(true);
     });
 
@@ -53,7 +53,7 @@ describe('/src/module.es6', () => {
 
     it('should create configuration module', () => {
       config = { okie: 'dokie' };
-      moduleTest = new MMBase(config, loggerConfig);
+      moduleTest = new MMBase({ config: config, logger: loggerConfig });
       return expect(moduleTest.getConfigModule() instanceof MMConfig).to.equal(true);
     });
 
@@ -63,7 +63,7 @@ describe('/src/module.es6', () => {
 
     it('should return a logger module', () => {
       config = { okie: 'dokie' };
-      moduleTest = new MMBase(config, loggerConfig);
+      moduleTest = new MMBase({ config: config, logger: loggerConfig });
       return expect(moduleTest.getLoggerModule() instanceof MMLogger).to.equal(true);
     });
 
@@ -73,7 +73,7 @@ describe('/src/module.es6', () => {
 
     it('should return configuration object', () => {
       config = { okie: 'dokie' };
-      moduleTest = new MMBase(config, loggerConfig);
+      moduleTest = new MMBase({ config: config, logger: loggerConfig });
       moduleTest.getConfig().should.be.equal(config);
     });
 

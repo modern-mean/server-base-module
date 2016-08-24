@@ -18,6 +18,6 @@ let defaultTask = gulp.series(clean, builder.build.all);
 defaultTask.displayName = 'default';
 gulp.task(defaultTask);
 
-let test = gulp.series(builder.test.src);
+let test = gulp.series(defaultTask, builder.test.src);
 test.displayName = 'test';
 gulp.task(test);
