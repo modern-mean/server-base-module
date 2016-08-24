@@ -31,19 +31,19 @@ describe('/src/module', () => {
 
     it('should return an object', () => {
       config = { okie: 'dokie' };
-      moduleTest = new MMBase({ config: config, logger: loggerConfig });
+      moduleTest = new MMBase({ MMConfig: config, MMLogger: loggerConfig });
       return moduleTest.should.be.an('object');
     });
 
     it('should create configuration module', () => {
       config = { okie: 'dokie' };
-      moduleTest = new MMBase({ config: config, logger: loggerConfig });
+      moduleTest = new MMBase({ MMConfig: config, MMLogger: loggerConfig });
       return expect(moduleTest.getConfigModule() instanceof MMConfig).to.equal(true);
     });
 
     it('should create a logger module', () => {
       config = { okie: 'dokie' };
-      moduleTest = new MMBase({ config: config, logger: loggerConfig });
+      moduleTest = new MMBase({ MMConfig: config, MMLogger: loggerConfig });
       return expect(moduleTest.getLoggerModule() instanceof MMLogger).to.equal(true);
     });
 
@@ -53,7 +53,7 @@ describe('/src/module', () => {
 
     it('should create configuration module', () => {
       config = { okie: 'dokie' };
-      moduleTest = new MMBase({ config: config, logger: loggerConfig });
+      moduleTest = new MMBase({ MMConfig: config, MMLogger: loggerConfig });
       return expect(moduleTest.getConfigModule() instanceof MMConfig).to.equal(true);
     });
 
@@ -63,7 +63,7 @@ describe('/src/module', () => {
 
     it('should return a logger module', () => {
       config = { okie: 'dokie' };
-      moduleTest = new MMBase({ config: config, logger: loggerConfig });
+      moduleTest = new MMBase({ MMConfig: config, MMLogger: loggerConfig });
       return expect(moduleTest.getLoggerModule() instanceof MMLogger).to.equal(true);
     });
 
@@ -73,8 +73,8 @@ describe('/src/module', () => {
 
     it('should return configuration object', () => {
       config = { okie: 'dokie' };
-      moduleTest = new MMBase({ config: config, logger: loggerConfig });
-      moduleTest.getConfig().should.be.equal(config);
+      moduleTest = new MMBase({ MMConfig: config, MMLogger: loggerConfig });
+      moduleTest.getConfig().okie.should.be.equal('dokie');
     });
 
   });

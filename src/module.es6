@@ -1,39 +1,45 @@
 import { MMLogger } from '@modern-mean/server-logger-module';
 import { MMConfig } from '@modern-mean/server-config-module';
+import { merge } from 'lodash';
+
+
+let loggerModule,
+  configModule;
 
 export class MMBase {
 
   constructor(...args) {
 
-    this.configModule = new MMConfig();
+    configModule = new MMConfig(this.parseArgs('MMConfig', args));
+    loggerModule = new MMLogger(this.parseArgs('MMLogger', args));
 
-    if (args[0] !== undefined && typeof args[0] === 'object') {
-
-      if (args[0].config) {
-        //Initiate config
-        this.configModule.set(args[0].config);
-      }
-
-      if (args[0].logger) {
-        //Initaite logger
-        let loggerModule = new MMLogger(args[0].logger);
-        this.loggerModule = loggerModule;
-      }
-
-    }
 
   }
 
   getConfigModule() {
-    return this.configModule;
-  }
-
-  getConfig() {
-    return this.configModule.get();
+    return configModule;
   }
 
   getLoggerModule() {
-    return this.loggerModule;
+    return loggerModule;
+  }
+
+  getConfig() {
+    return configModule.get();
+  }
+
+  getLogger() {
+    return loggerModule.get();
+  }
+
+  parseArgs(key, args) {
+    let config = {};
+    args.map(function (obj) {
+      if (obj[key]) {
+        config = merge(config, obj[key]);
+      }
+    });
+    return config;
   }
 
 }

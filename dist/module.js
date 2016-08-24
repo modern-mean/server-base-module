@@ -9,37 +9,42 @@ var _serverLoggerModule = require('@modern-mean/server-logger-module');
 
 var _serverConfigModule = require('@modern-mean/server-config-module');
 
+var _lodash = require('lodash');
+
+let loggerModule, configModule;
+
 class MMBase {
 
   constructor(...args) {
 
-    this.configModule = new _serverConfigModule.MMConfig();
-
-    if (args[0] !== undefined && typeof args[0] === 'object') {
-
-      if (args[0].config) {
-        //Initiate config
-        this.configModule.set(args[0].config);
-      }
-
-      if (args[0].logger) {
-        //Initaite logger
-        let loggerModule = new _serverLoggerModule.MMLogger(args[0].logger);
-        this.loggerModule = loggerModule;
-      }
-    }
+    configModule = new _serverConfigModule.MMConfig(this.parseArgs('MMConfig', args));
+    loggerModule = new _serverLoggerModule.MMLogger(this.parseArgs('MMLogger', args));
   }
 
   getConfigModule() {
-    return this.configModule;
-  }
-
-  getConfig() {
-    return this.configModule.get();
+    return configModule;
   }
 
   getLoggerModule() {
-    return this.loggerModule;
+    return loggerModule;
+  }
+
+  getConfig() {
+    return configModule.get();
+  }
+
+  getLogger() {
+    return loggerModule.get();
+  }
+
+  parseArgs(key, args) {
+    let config = {};
+    args.map(function (obj) {
+      if (obj[key]) {
+        config = (0, _lodash.merge)(config, obj[key]);
+      }
+    });
+    return config;
   }
 
 }
