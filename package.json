@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/modern-mean/server-base-module#readme",
   "dependencies": {
-    "@modern-mean/build-gulp": "0.0.22",
-    "@modern-mean/server-config-module": "0.0.6",
-    "@modern-mean/server-logger-module": "0.0.8"
+    "@modern-mean/build-gulp": "~0.0.22",
+    "@modern-mean/server-config-module": "~0.0.6",
+    "@modern-mean/server-logger-module": "~0.0.8"
   }
 }
