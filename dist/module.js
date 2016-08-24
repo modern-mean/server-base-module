@@ -13,16 +13,20 @@ class MMBase {
 
   constructor(...args) {
 
-    if (args[0].config) {
-      //Initiate config
-      let configModule = new _serverConfigModule.MMConfig(args[0].config);
-      this.configModule = configModule;
-    }
+    this.configModule = new _serverConfigModule.MMConfig();
 
-    if (args[0].logger) {
-      //Initaite logger
-      let loggerModule = new _serverLoggerModule.MMLogger(args[0].logger);
-      this.loggerModule = loggerModule;
+    if (args[0] !== undefined && typeof args[0] === 'object') {
+
+      if (args[0].config) {
+        //Initiate config
+        this.configModule.set(args[0].config);
+      }
+
+      if (args[0].logger) {
+        //Initaite logger
+        let loggerModule = new _serverLoggerModule.MMLogger(args[0].logger);
+        this.loggerModule = loggerModule;
+      }
     }
   }
 
