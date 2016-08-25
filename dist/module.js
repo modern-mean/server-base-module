@@ -19,6 +19,7 @@ class MMBase {
 
     configModule = new _serverConfigModule.MMConfig(this.parseArgs('MMConfig', args));
     loggerModule = new _serverLoggerModule.MMLogger(this.parseArgs('MMLogger', args));
+    console.log('test');
   }
 
   getConfigModule() {
