@@ -27,5 +27,3 @@ gulp.task(test);
 let defaultTask = gulp.series(clean, builder.build.all);
 defaultTask.displayName = 'default';
 gulp.task(defaultTask);
-
-gulp.task('pre-commit', build);
