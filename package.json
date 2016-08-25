@@ -11,7 +11,7 @@
     "postversion": "git push && git push --tags && npm publish --access public",
     "release:patch": "npm test && npm run build && npm version patch",
     "release:minor": "npm test && npm run build && npm version minor",
-    "release:major": "npm test && npm run build && npm version major",
+    "release:major": "npm test && npm run build && npm version major"
   },
   "repository": {
     "type": "git",
