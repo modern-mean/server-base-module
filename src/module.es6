@@ -12,6 +12,7 @@ export class MMBase {
 
     configModule = new MMConfig(this.parseArgs('MMConfig', args));
     loggerModule = new MMLogger(this.parseArgs('MMLogger', args));
+    console.log('test');
 
   }
 
