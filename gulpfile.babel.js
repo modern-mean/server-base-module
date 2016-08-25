@@ -14,16 +14,17 @@ clean.displayName = 'clean';
 gulp.task(clean);
 
 
-//Gulp Default
+//gulp build
 let build = gulp.series(clean, builder.build.all);
 build.displayName = 'build';
 gulp.task(build);
 
+//gulp test
 let test = gulp.series(builder.test.src);
 test.displayName = 'test';
 gulp.task(test);
 
-//Gulp Default
-let defaultTask = gulp.series(clean, builder.build.all);
+//gulp
+let defaultTask = gulp.series(build);
 defaultTask.displayName = 'default';
 gulp.task(defaultTask);
