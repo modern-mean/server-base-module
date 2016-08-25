@@ -4,6 +4,10 @@
   "description": "Base server module",
   "keywords": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=6.4",
+    "npm": ">=3.10.3"
+  },
   "scripts": {
     "coverage": "gulp test:coverage",
     "test": "gulp test",
@@ -24,10 +28,11 @@
   },
   "homepage": "https://github.com/modern-mean/server-base-module#readme",
   "dependencies": {
-    "@modern-mean/build-gulp": "~0.0.22",
     "@modern-mean/server-config-module": "~0.0.6",
     "@modern-mean/server-logger-module": "~0.0.8",
     "lodash.merge": "^4.6.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@modern-mean/build-gulp": "~0.0.22"
+  }
 }
