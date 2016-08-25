@@ -1,8 +1,5 @@
-'use strict';
-
 import gulp from 'gulp';
 import * as builder from '@modern-mean/build-gulp';
-
 
 //gulp build
 let build = gulp.series(builder.build.clean, builder.build.all);

@@ -1,5 +1,3 @@
-'use strict';
-
 import { MMBase } from '../src/module.es6';
 import { MMConfig } from '@modern-mean/server-config-module';
 import { MMLogger } from '@modern-mean/server-logger-module';
