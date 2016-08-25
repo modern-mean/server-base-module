@@ -1,6 +1,6 @@
 {
   "name": "@modern-mean/server-base-module",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Base server module",
   "keywords": "",
   "main": "index.js",
@@ -29,5 +29,5 @@
     "@modern-mean/server-logger-module": "~0.0.8",
     "lodash.merge": "^4.6.0"
   },
-  "devDependencies": { }
+  "devDependencies": {}
 }
