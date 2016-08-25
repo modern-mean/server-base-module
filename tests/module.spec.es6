@@ -11,11 +11,13 @@ let sandbox,
 
 loggerConfig = {
   winston: {
-    level:  process.env.MM_EXPRESS_LOG_LEVEL || process.env.MM_LOG_LEVEL || 'info', //{ error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5 }
-    file: process.env.MM_EXPRESS_LOG_FILE || process.env.MM_LOG_FILE || 'false',
-    console: process.env.MM_EXPRESS_LOG_CONSOLE || process.env.MM_LOG_CONSOLE || 'true'
+    level:  'info',
+    file: 'false',
+    console: 'false'
   }
 };
+
+config = { okie: 'dokie' };
 
 describe('/src/module', () => {
 
@@ -30,21 +32,39 @@ describe('/src/module', () => {
   describe('constructor', () => {
 
     it('should return an object', () => {
-      config = { okie: 'dokie' };
+
       moduleTest = new MMBase({ MMConfig: config, MMLogger: loggerConfig });
       return moduleTest.should.be.an('object');
     });
 
-    it('should create configuration module', () => {
-      config = { okie: 'dokie' };
-      moduleTest = new MMBase({ MMConfig: config, MMLogger: loggerConfig });
-      return expect(moduleTest.getConfigModule() instanceof MMConfig).to.equal(true);
+    describe('MMConfig', () => {
+
+      it('should create MMConfig module', () => {
+        config = { okie: 'dokie' };
+        moduleTest = new MMBase();
+        return expect(moduleTest.getConfigModule() instanceof MMConfig).to.equal(true);
+      });
+
+      it('should set configuration based on MMConfig key', () => {
+        moduleTest = new MMBase({ MMConfig: config });
+        return moduleTest.getConfigModule().get().okie.should.be.equal('dokie');
+      });
+
     });
 
-    it('should create a logger module', () => {
-      config = { okie: 'dokie' };
-      moduleTest = new MMBase({ MMConfig: config, MMLogger: loggerConfig });
-      return expect(moduleTest.getLoggerModule() instanceof MMLogger).to.equal(true);
+    describe('MMLogger', () => {
+
+      it('should create a MMLogger module', () => {
+        config = { okie: 'dokie' };
+        moduleTest = new MMBase();
+        return expect(moduleTest.getLoggerModule() instanceof MMLogger).to.equal(true);
+      });
+
+      it('should set configuration based on MMLogger key', () => {
+        moduleTest = new MMBase({ MMLogger: loggerConfig });
+        return moduleTest.getLoggerModule().getConfig().winston.console.should.be.equal('false');
+      });
+
     });
 
   });

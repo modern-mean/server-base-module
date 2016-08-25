@@ -39,7 +39,7 @@ export class MMBase {
         config = merge(config, obj[key]);
       }
     });
-    return config;
+    return ((Object.keys(config).length) ? config : undefined);
   }
 
 }

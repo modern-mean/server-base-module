@@ -44,7 +44,7 @@ class MMBase {
         config = (0, _lodash.merge)(config, obj[key]);
       }
     });
-    return config;
+    return Object.keys(config).length ? config : undefined;
   }
 
 }

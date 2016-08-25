@@ -8,7 +8,7 @@
     "coverage": "gulp test:coverage",
     "test": "gulp test",
     "build": "gulp",
-    "preversion": "npm test",
+    "preversion": "npm test && npm build",
     "version": "npm run build && git add -A",
     "postversion": "git push && git push --tags && npm publish --access public"
   },
@@ -27,5 +27,10 @@
     "@modern-mean/server-config-module": "~0.0.6",
     "@modern-mean/server-logger-module": "~0.0.8",
     "lodash.merge": "^4.6.0"
+  },
+  "devDependencies": {
+    "git-guppy": "^1.2.1",
+    "git-hooks": "^1.1.0",
+    "guppy-pre-commit": "^0.3.0"
   }
 }

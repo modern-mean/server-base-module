@@ -13,11 +13,19 @@ function clean() {
 clean.displayName = 'clean';
 gulp.task(clean);
 
+
+//Gulp Default
+let build = gulp.series(clean, builder.build.all);
+build.displayName = 'build';
+gulp.task(build);
+
+let test = gulp.series(builder.test.src);
+test.displayName = 'test';
+gulp.task(test);
+
 //Gulp Default
 let defaultTask = gulp.series(clean, builder.build.all);
 defaultTask.displayName = 'default';
 gulp.task(defaultTask);
 
-let test = gulp.series(builder.test.src);
-test.displayName = 'test';
-gulp.task(test);
+gulp.task('pre-commit', build);
