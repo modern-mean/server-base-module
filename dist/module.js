@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MMBase = undefined;
+exports.BaseModule = undefined;
 
 var _serverLoggerModule = require('@modern-mean/server-logger-module');
 
@@ -11,30 +11,28 @@ var _serverConfigModule = require('@modern-mean/server-config-module');
 
 var _lodash = require('lodash');
 
-let loggerModule, configModule;
-
-class MMBase {
+class BaseModule {
 
   constructor(...args) {
 
-    configModule = new _serverConfigModule.MMConfig(this.parseArgs('MMConfig', args));
-    loggerModule = new _serverLoggerModule.MMLogger(this.parseArgs('MMLogger', args));
+    this.configModule = new _serverConfigModule.ConfigModule(this.parseArgs('config', args));
+    this.loggerModule = new _serverLoggerModule.LoggerModule(this.parseArgs('logger', args));
   }
 
   getConfigModule() {
-    return configModule;
+    return this.configModule;
   }
 
   getLoggerModule() {
-    return loggerModule;
+    return this.loggerModule;
   }
 
   getConfig() {
-    return configModule.get();
+    return this.configModule.get();
   }
 
   getLogger() {
-    return loggerModule.get();
+    return this.loggerModule.get();
   }
 
   parseArgs(key, args) {
@@ -48,4 +46,4 @@ class MMBase {
   }
 
 }
-exports.MMBase = MMBase;
+exports.BaseModule = BaseModule;

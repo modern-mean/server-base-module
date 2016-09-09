@@ -2,20 +2,10 @@ language: node_js
 sudo: false
 node_js:
 - 6.4
-env:
-  matrix:
-  - NODE_ENV=travis CXX="g++-4.8" CC="gcc-4.8"
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-4.8
-    - gcc-4.8
-    - clang
+
 before_install:
 - npm i nsp -g
-- npm install gulpjs/gulp-cli -g
+
 after_script:
 - nsp audit-package
 - npm run coverage
