@@ -5,7 +5,7 @@ Base Module for server components
 
 #Installation
 ```sh
-$ npm install --save server-base-module
+$ npm install --save @modern-mean/server-base-module
 ```
 
 [gitter-image]: https://badges.gitter.im/modern-mean.svg
