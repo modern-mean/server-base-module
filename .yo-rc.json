@@ -1,0 +1,20 @@
+{
+  "generator-github-create": {
+    "readme": {
+      "title": "server-base-module",
+      "description": "Base Module for server components",
+      "usebadges": true,
+      "badges": [
+        "travis",
+        "coveralls",
+        "david",
+        "davidDev",
+        "gitter",
+        "npm"
+      ],
+      "profile": "modern-mean",
+      "repository": "server-base-module",
+      "scoped": true
+    }
+  }
+}
