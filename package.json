@@ -1,6 +1,6 @@
 {
   "name": "@modern-mean/server-base-module",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Base server module",
   "keywords": "",
   "main": "dist/index.js",
