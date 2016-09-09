@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Base server module",
   "keywords": "",
-  "main": "/dist/index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=6.4",
     "npm": ">=3.10.3"

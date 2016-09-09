@@ -3,5 +3,8 @@
 .eslintrc
 .gitignore
 .travis.yml
+.yo-rc.json
 src/
 tests/
+coverage/
+.nyc_output
