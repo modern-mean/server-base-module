@@ -9,6 +9,7 @@ export class BaseModule {
     this.config = this.configModule.get();
 
     this.loggerModule = new LoggerModule(this.configModule);
+    this.logger = this.loggerModule.get();
 
   }
 

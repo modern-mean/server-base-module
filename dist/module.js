@@ -17,6 +17,7 @@ class BaseModule {
     this.config = this.configModule.get();
 
     this.loggerModule = new _serverLoggerModule.LoggerModule(this.configModule);
+    this.logger = this.loggerModule.get();
   }
 
   getConfigModule() {
