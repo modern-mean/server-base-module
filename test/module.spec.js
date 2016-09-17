@@ -4,16 +4,7 @@ import { LoggerModule } from '@modern-mean/server-logger-module';
 
 let sandbox,
   moduleTest,
-  config,
-  loggerConfig;
-
-loggerConfig = {
-  winston: {
-    level:  'info',
-    file: 'false',
-    console: 'false'
-  }
-};
+  config;
 
 config = { okie: 'dokie' };
 
@@ -30,22 +21,25 @@ describe('/src/module', () => {
   describe('constructor', () => {
 
     it('should return an object', () => {
-
-      moduleTest = new BaseModule({ config: config, logger: loggerConfig });
+      moduleTest = new BaseModule();
       return moduleTest.should.be.an('object');
     });
 
     describe('ConfigModule', () => {
 
       it('should create ConfigModule module', () => {
-        config = { okie: 'dokie' };
         moduleTest = new BaseModule();
         return expect(moduleTest.getConfigModule() instanceof ConfigModule).to.equal(true);
       });
 
-      it('should set configuration based on config key', () => {
-        moduleTest = new BaseModule({ config: config });
-        return moduleTest.getConfigModule().get().okie.should.be.equal('dokie');
+      it('should set config', () => {
+        moduleTest = new BaseModule({ TestModule: { okie: 'dokie' } });
+        return moduleTest.config.TestModule.okie.should.be.equal('dokie');
+      });
+
+      it('should set initialize configuration module', () => {
+        moduleTest = new BaseModule({ TestModule: { okie: 'dokie' } });
+        return moduleTest.getConfigModule().get().TestModule.okie.should.be.equal('dokie');
       });
 
     });
@@ -53,14 +47,13 @@ describe('/src/module', () => {
     describe('LoggerModule', () => {
 
       it('should create a LoggerModule module', () => {
-        config = { okie: 'dokie' };
         moduleTest = new BaseModule();
         return expect(moduleTest.getLoggerModule() instanceof LoggerModule).to.equal(true);
       });
 
       it('should set configuration based on logger key', () => {
-        moduleTest = new BaseModule({ logger: loggerConfig });
-        return moduleTest.getLoggerModule().config.winston.console.should.be.equal('false');
+        moduleTest = new BaseModule({ LoggerModule: { console: false } });
+        return moduleTest.getLoggerModule().config.console.should.be.equal(false);
       });
 
     });
@@ -69,9 +62,8 @@ describe('/src/module', () => {
 
   describe('getConfigModule', () => {
 
-    it('should create configuration module', () => {
-      config = { okie: 'dokie' };
-      moduleTest = new BaseModule({ config: config, logger: loggerConfig });
+    it('should return configuration module', () => {
+      moduleTest = new BaseModule();
       return expect(moduleTest.getConfigModule() instanceof ConfigModule).to.equal(true);
     });
 
@@ -80,8 +72,7 @@ describe('/src/module', () => {
   describe('getLoggerModule', () => {
 
     it('should return a logger module', () => {
-      config = { okie: 'dokie' };
-      moduleTest = new BaseModule({ config: config, logger: loggerConfig });
+      moduleTest = new BaseModule();
       return expect(moduleTest.getLoggerModule() instanceof LoggerModule).to.equal(true);
     });
 
@@ -91,8 +82,8 @@ describe('/src/module', () => {
 
     it('should return configuration object', () => {
       config = { okie: 'dokie' };
-      moduleTest = new BaseModule({ config: config, logger: loggerConfig });
-      moduleTest.getConfig().okie.should.be.equal('dokie');
+      moduleTest = new BaseModule({ TestModule: config });
+      return moduleTest.getConfig().TestModule.okie.should.be.equal('dokie');
     });
 
   });
@@ -100,8 +91,8 @@ describe('/src/module', () => {
   describe('getLogger', () => {
 
     it('should return winston object', () => {
-      moduleTest = new BaseModule({ logger: loggerConfig });
-      moduleTest.getLogger().debug.should.be.a('function');
+      moduleTest = new BaseModule();
+      return moduleTest.getLogger().debug.should.be.a('function');
     });
 
   });

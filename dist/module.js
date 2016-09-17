@@ -9,14 +9,14 @@ var _serverLoggerModule = require('@modern-mean/server-logger-module');
 
 var _serverConfigModule = require('@modern-mean/server-config-module');
 
-var _lodash = require('lodash');
-
 class BaseModule {
 
   constructor(...args) {
 
-    this.configModule = new _serverConfigModule.ConfigModule(this.parseArgs('config', args));
-    this.loggerModule = new _serverLoggerModule.LoggerModule(this.parseArgs('logger', args));
+    this.configModule = new _serverConfigModule.ConfigModule(...args);
+    this.config = this.configModule.get();
+
+    this.loggerModule = new _serverLoggerModule.LoggerModule(this.configModule);
   }
 
   getConfigModule() {
@@ -33,16 +33,6 @@ class BaseModule {
 
   getLogger() {
     return this.loggerModule.get();
-  }
-
-  parseArgs(key, args) {
-    let config = {};
-    args.map(function (obj) {
-      if (obj[key]) {
-        config = (0, _lodash.merge)(config, obj[key]);
-      }
-    });
-    return Object.keys(config).length ? config : undefined;
   }
 
 }
