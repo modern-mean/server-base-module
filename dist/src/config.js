@@ -26,6 +26,17 @@ class ConfigModule {
             return module;
         }
     }
+    merge(module) {
+        let config = this.getModule(module.module);
+        if (config) {
+            lodash.merge(this.config[this.config.indexOf(config)], module);
+            return config;
+        }
+        else {
+            this.config.push(module);
+            return module;
+        }
+    }
 }
 exports.ConfigModule = ConfigModule;
 //# sourceMappingURL=config.js.map

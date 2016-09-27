@@ -32,6 +32,17 @@ export class ConfigModule {
     }
   }
 
+  merge(module: ModuleConfig): ModuleConfig {
+    let config = this.getModule(module.module);
+    if (config) {
+      lodash.merge(this.config[this.config.indexOf(config)], module);
+      return config;
+    } else {
+      this.config.push(module);
+      return module;
+    }
+  }
+
 }
 
 export interface ModuleConfig {

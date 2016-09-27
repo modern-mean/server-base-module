@@ -52,4 +52,34 @@ test('config.ts defaults', (assert) => {
     assert.deepEqual(moduleTest.getModule('TestModule'), testconfig, 'push configuration to array if it doesnt exit');
     assert.end();
 });
+test('config.ts merge', (assert) => {
+    let testconfig = {
+        module: 'TestModule',
+        type: 'config',
+        options: {
+            test: 'option'
+        }
+    };
+    let moduleTest = new config_1.ConfigModule();
+    moduleTest.merge(testconfig);
+    assert.deepEqual(moduleTest.getModule('TestModule'), testconfig, 'push configuration to array if it doesnt exit');
+    assert.end();
+});
+test('config.ts merge', (assert) => {
+    let sandbox = sinon.sandbox.create();
+    let spy = sandbox.spy(lodash, 'merge');
+    let testconfig = {
+        module: 'TestModule',
+        type: 'config',
+        options: {
+            test: 'option'
+        }
+    };
+    let moduleTest = new config_1.ConfigModule(testconfig);
+    moduleTest.merge(testconfig);
+    assert.equal(spy.called, true, 'should call lodash.merge');
+    assert.deepEqual(spy.args[0], [moduleTest.getModule('TestModule'), testconfig], 'should call lodash.merge with arguments');
+    sandbox.restore();
+    assert.end();
+});
 //# sourceMappingURL=config.spec.js.map
