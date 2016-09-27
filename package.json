@@ -12,7 +12,7 @@
     "npm": ">=3.10.3"
   },
   "scripts": {
-    "coverage": "istanbul report --reporter=lcov | coveralls",
+    "coverage": "cat ./coverage/lcov.info | coveralls",
     "build": "rm -rf ./dist && tsc",
     "lint": "eslint ./test/**/*.ts ./src/**/*.ts",
     "postversion": "git push && git push --tags && npm publish --access public",
@@ -20,7 +20,7 @@
     "release:minor": "npm test && npm run build && npm version minor",
     "release:major": "npm test && npm run build && npm version major",
     "release:quick": "npm test && npm run build && git add -A && git commit -m 'Quick Release Patch' && npm version patch",
-    "test": "ts-node ./node_modules/istanbul/lib/cli.js cover -e .ts --report text --report html --report lcov ./node_modules/.bin/blue-tape -- \"test/**/*.spec.ts\" | tap-spec && npm run lint"
+    "test": "rm -rf /coverage && ts-node ./node_modules/.bin/istanbul cover -e .ts --print both ./node_modules/.bin/blue-tape -- \"test/**/*.spec.ts\" | tap-spec && npm run lint"
   },
   "repository": {
     "type": "git",
