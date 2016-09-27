@@ -23,7 +23,7 @@ export class LoggerModule {
 
     if (!this.logger) {
 
-      this.config = this.configModule.getModule('LoggerModule') || this.configModule.defaults(LoggerDefaultConfig());
+      this.config = this.configModule.defaults(LoggerDefaultConfig());
 
       this.transports = [];
       if (this.config.options.file) {
