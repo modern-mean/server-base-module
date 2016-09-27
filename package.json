@@ -35,6 +35,8 @@
   },
   "homepage": "https://github.com/modern-mean/server-base-module#readme",
   "dependencies": {
+    "@types/winston": "0.0.28",
+    "@types/lodash": "^4.14.36",
     "lodash.defaults": "^4.2.0",
     "lodash.defaultsdeep": "^4.6.0",
     "lodash.merge": "^4.6.0",
@@ -42,10 +44,8 @@
   },
   "devDependencies": {
     "@types/blue-tape": "^0.1.30",
-    "@types/lodash": "^4.14.36",
     "@types/node": "^6.0.40",
     "@types/sinon": "^1.16.31",
-    "@types/winston": "0.0.28",
     "blue-tape": "^1.0.0",
     "coveralls": "^2.11.12",
     "cross-env": "^2.0.1",
