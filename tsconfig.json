@@ -1,0 +1,15 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2015",
+        "sourceMap": true,
+        "inlineSources": true,
+        "isolatedModules": true,
+        "outDir": "./dist",
+        "watch": true
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
