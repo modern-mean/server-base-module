@@ -7,6 +7,7 @@
     "module"
   ],
   "main": "dist/src/index.js",
+  "types": "index.d.ts",
   "engines": {
     "node": ">=6.4",
     "npm": ">=3.10.3"

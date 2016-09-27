@@ -17,9 +17,6 @@ export class BaseModule {
     //Logger Module.
     this.loggerModule = new LoggerModule(this.configModule, ...args);
     this.logger = this.loggerModule.getLogger();
-
-
-
   }
 
   getLogger(): winston.LoggerInstance {

@@ -54,7 +54,7 @@ export interface LoggerOptions {
   console: boolean
 }
 
-export function LoggerDefaultConfig() {
+export function LoggerDefaultConfig(): ModuleConfig {
   let options: LoggerOptions = {
     level: process.env.LOGGERMODULE_LEVEL || 'info',
     file: process.env.LOGGERMODULE_FILE || false,
