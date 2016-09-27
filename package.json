@@ -12,7 +12,7 @@
     "npm": ">=3.10.3"
   },
   "scripts": {
-    "coverage": "istanbul report --reporter=text-lcov | coveralls",
+    "coverage": "istanbul report --reporter=lcov | coveralls",
     "build": "rm -rf ./dist && tsc",
     "lint": "eslint ./test/**/*.ts ./src/**/*.ts",
     "postversion": "git push && git push --tags && npm publish --access public",
