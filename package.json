@@ -1,6 +1,6 @@
 {
   "name": "@modern-mean/server-base-module",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Base server module",
   "keywords": [
     "base",
