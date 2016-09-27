@@ -9,4 +9,3 @@ test/
 coverage/
 npm-debug.log
 .vscode
-tsconfig.json
