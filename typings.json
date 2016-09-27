@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "lodash": "registry:npm/lodash#4.0.0+20160723033700"
-  },
-  "globalDependencies": {
-    "node": "registry:env/node#6.0.0+20160918225031",
-    "winston": "registry:dt/winston#0.0.0+20160417152829"
-  }
-}

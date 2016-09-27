@@ -4,9 +4,9 @@
 .gitignore
 .travis.yml
 .yo-rc.json
-src/
 test/
 /dist/test
 coverage/
-.nyc_output
 npm-debug.log
+.vscode
+tsconfig.json
