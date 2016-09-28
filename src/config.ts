@@ -8,7 +8,7 @@ export class ConfigModule {
     this.config = [];
     args.forEach(arg => {
       if (arg.module && arg.type === 'config') {
-        this.config.push(arg);
+        this.defaults(arg);
       }
     });
   }
