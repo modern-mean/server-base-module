@@ -50,3 +50,12 @@ export interface ModuleConfig {
   type: string,
   options: any
 }
+
+export function createConfig(name: string): ModuleConfig {
+  let config: ModuleConfig = {
+    module: name,
+    type: 'config',
+    options: {}
+  };
+  return config;
+}

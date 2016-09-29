@@ -1,6 +1,6 @@
 import * as test from 'blue-tape';
 import * as sinon from 'sinon';
-import { ConfigModule, ModuleConfig } from '../src/config';
+import { ConfigModule, ModuleConfig, createConfig } from '../src/config';
 import * as lodash from 'lodash';
 
 test('config.ts constructor with no args', (assert) => {
@@ -85,6 +85,16 @@ test('config.ts merge', (assert) => {
   assert.equal(spy.called, true, 'should call lodash.merge');
   assert.deepEqual(spy.args[0], [moduleTest.getModule('TestModule'), testconfig], 'should call lodash.merge with arguments');
   sandbox.restore();
+  assert.end();
+});
+
+test('config.ts createConfig', (assert) => {
+  let skel = {
+    module: 'TestModule',
+    type: 'config',
+    options: {}
+  };
+  assert.deepEqual(createConfig(skel.module), skel, 'should return a skeleton config');
   assert.end();
 });
 

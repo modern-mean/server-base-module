@@ -20,3 +20,8 @@ test('index.ts export ConfigModule', (assert) => {
   assert.notEqual(indexTest.ConfigModule, undefined, 'Should not be undefined');
   assert.end();
 });
+
+test('index.ts export createConfig', (assert) => {
+  assert.equal(typeof indexTest.createConfig, 'function', 'should be a function');
+  assert.end();
+});
