@@ -13,19 +13,20 @@ export class ConfigModule {
     });
   }
 
-  get(): Array<ModuleConfig> {
-    return this.config;
-  }
+  get(filter?: string): ModuleConfig[] {
+    if (!filter) {
+      return this.config;
+    }
 
-  getModule(module: string): ModuleConfig {
-    return lodash.find(this.config, { module: module });
+    return this.config
+      .filter(item => item.module === filter);
   }
 
   defaults(module: ModuleConfig): ModuleConfig {
-    let config = this.getModule(module.module);
-    if (config) {
-      lodash.defaultsDeep(this.config[this.config.indexOf(config)], module);
-      return config;
+    let config = this.get(module.module);
+    if (config.length) {
+      lodash.defaultsDeep(this.config[this.config.indexOf(config[0])], module);
+      return config[0];
     } else {
       this.config.push(module);
       return module;
@@ -33,10 +34,10 @@ export class ConfigModule {
   }
 
   merge(module: ModuleConfig): ModuleConfig {
-    let config = this.getModule(module.module);
-    if (config) {
-      lodash.merge(this.config[this.config.indexOf(config)], module);
-      return config;
+    let config = this.get(module.module);
+    if (config.length) {
+      lodash.merge(this.config[this.config.indexOf(config[0])], module);
+      return config[0];
     } else {
       this.config.push(module);
       return module;
