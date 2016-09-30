@@ -1,7 +1,7 @@
 import * as test from 'blue-tape';
 import * as sinon from 'sinon';
 import { BaseModule } from '../src/module';
-import { ConfigModule } from '../src/config';
+import { ConfigModule, createConfig, ModuleConfig } from '../src/config';
 import * as Logger from '../src/logger';
 import * as winston from 'winston';
 
@@ -38,5 +38,13 @@ test('module.ts getLoggerModule', (assert) => {
 test('module.ts getConfigModule', (assert) => {
   let moduleTest = new BaseModule();
   assert.equal(moduleTest.getConfigModule() instanceof ConfigModule, true, 'return instance of ConfigModule');
+  assert.end();
+});
+
+test.only('module.ts constructor with LoggerModule config in args', (assert) => {
+  let config: ModuleConfig = createConfig('LoggerModule');
+  config.options.level = 'silly';
+  let moduleTest = new BaseModule(config);
+  assert.equal(moduleTest.getLogger().level, 'silly', 'should have log level silly');
   assert.end();
 });

@@ -1,7 +1,7 @@
 import * as test from 'blue-tape';
 import * as sinon from 'sinon';
 import { LoggerModule } from '../src/logger';
-import { ConfigModule, ModuleConfig } from '../src/config';
+import { ConfigModule, ModuleConfig, createConfig } from '../src/config';
 import * as winston from 'winston';
 
 test('logger.ts constructor with no args', (assert) => {
