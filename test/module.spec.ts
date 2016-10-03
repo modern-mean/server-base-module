@@ -41,7 +41,7 @@ test('module.ts getConfigModule', (assert) => {
   assert.end();
 });
 
-test.only('module.ts constructor with LoggerModule config in args', (assert) => {
+test('module.ts constructor with LoggerModule config in args', (assert) => {
   let config: ModuleConfig = createConfig('LoggerModule');
   config.options.level = 'silly';
   let moduleTest = new BaseModule(config);

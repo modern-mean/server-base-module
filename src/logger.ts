@@ -1,4 +1,4 @@
-import { ConfigModule, ModuleConfig } from './config';
+import { ConfigModule, ModuleConfig, createConfig } from './config';
 import * as winston from 'winston';
 
 export class LoggerModule {
@@ -14,7 +14,6 @@ export class LoggerModule {
     args.forEach(arg => {
       if (arg instanceof winston.Logger) {
         this.logger = arg;
-        return false;
       }
       else if (arg instanceof ConfigModule) {
         this.configModule = arg;
@@ -23,7 +22,7 @@ export class LoggerModule {
 
     if (!this.logger) {
 
-      this.config = this.configModule.defaults(LoggerDefaultConfig());
+      this.config = this.configModule.defaults(DefaultConfig());
 
       this.transports = [];
       if (this.config.options.file) {
@@ -54,16 +53,13 @@ export interface LoggerOptions {
   console: boolean
 }
 
-export function LoggerDefaultConfig(): ModuleConfig {
+function DefaultConfig(): ModuleConfig {
   let options: LoggerOptions = {
     level: process.env.LOGGERMODULE_LEVEL || 'info',
     file: process.env.LOGGERMODULE_FILE || false,
     console: process.env.LOGGERMODULE_CONSOLE ? false : true
   };
-  let config: ModuleConfig = {
-    module: 'LoggerModule',
-    type: 'config',
-    options: options
-  };
+  let config: ModuleConfig = createConfig('LoggerModule');
+  config.options = options;
   return config;
 }

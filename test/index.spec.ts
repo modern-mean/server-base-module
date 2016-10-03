@@ -11,11 +11,6 @@ test('index.ts export LoggerModule', (assert) => {
   assert.end();
 });
 
-test('index.ts export LoggerDefaultConfig', (assert) => {
-  assert.equal(typeof indexTest.LoggerDefaultConfig, 'function', 'should be a function');
-  assert.end();
-});
-
 test('index.ts export ConfigModule', (assert) => {
   assert.notEqual(indexTest.ConfigModule, undefined, 'Should not be undefined');
   assert.end();
