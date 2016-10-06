@@ -46,6 +46,16 @@ export class ConfigModule {
 
 }
 
+export function isConfig(config: any): config is ModuleConfig {
+  if (typeof config !== 'object') {
+    return false;
+  }
+  if (!config.type || !config.options || !config.module) {
+    return false;
+  }
+  return (<ModuleConfig>config).type === 'config';
+}
+
 export interface ModuleConfig {
   module: string,
   type: string,

@@ -1,6 +1,6 @@
 import * as test from 'blue-tape';
 import * as sinon from 'sinon';
-import { ConfigModule, ModuleConfig, createConfig } from '../src/config';
+import { ConfigModule, ModuleConfig, createConfig, isConfig } from '../src/config';
 import * as lodash from 'lodash';
 
 test('config.ts constructor with no args', (assert) => {
@@ -95,6 +95,20 @@ test('config.ts createConfig', (assert) => {
     options: {}
   };
   assert.deepEqual(createConfig(skel.module), skel, 'should return a skeleton config');
+  assert.end();
+});
+
+test('config.ts isConfig', (assert) => {
+  let config = createConfig('TestModule');
+  assert.equal(isConfig(config), true, 'should return true if its a configuration interface');
+  let notconfig = {
+    type: 'test'
+  };
+  assert.equal(isConfig(notconfig), false, 'should return false if its not a configuration interface');
+  let notconfig2 = [{
+    type: 'test'
+  }];
+  assert.equal(isConfig(notconfig2), false, 'should return false if its not a configuration interface');
   assert.end();
 });
 
