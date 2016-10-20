@@ -1,5 +1,5 @@
-import { ModuleConfig  } from './base';
-import { MiddlewareInterface  } from './router';
+import { ModuleConfig } from './base';
+import { MiddlewareInterface } from './router';
 import { HttpServerModule, HttpServerModuleInterface, HttpServerConfigInterface } from './http';
 import * as https from 'https';
 import { Observable } from '@reactivex/rxjs';
@@ -48,7 +48,7 @@ export class HttpsServerModule extends HttpServerModule implements HttpsServerMo
   }
 
   httpsListen(): Observable<string> {
-    return Observable.create((observer) => {
+    let observe = Observable.create((observer) => {
       try {
         observer.next('HttpsServer::Read certificates');
         this._httpsConfig.options.options.key = fs.readFileSync(this._httpsConfig.options.options.key);
@@ -72,23 +72,28 @@ export class HttpsServerModule extends HttpServerModule implements HttpsServerMo
         observer.error(err);
       }
     });
+
+    return this.httpListen().merge(observe);
+
   }
 
   httpsClose(): Observable<string> {
-    return Observable.create((observer) => {
+    let observe = Observable.create((observer) => {
       observer.next('HttpServer::Close');
       try {
-          /* istanbul ignore next */
-          this._httpsServer.once('close', () => {
-            observer.next('HttpServer::Destroyed');
-            observer.complete();
-          });
+        /* istanbul ignore next */
+        this._httpsServer.once('close', () => {
+          observer.next('HttpServer::Destroyed');
+          observer.complete();
+        });
 
-          this._httpsServer.close();
-        } catch(err) {
-          observer.error(err);
-        }
+        this._httpsServer.close();
+      } catch(err) {
+        observer.error(err);
+      }
     });
+
+    return this.httpClose().merge(observe);
   }
 
 }

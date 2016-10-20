@@ -1,4 +1,4 @@
-import { ModuleConfig  } from './base';
+import { ModuleConfig } from './base';
 import { ExpressModule, ExpressModuleInterface } from './express';
 import * as http from 'http';
 import { Observable } from '@reactivex/rxjs';
@@ -70,16 +70,16 @@ export class HttpServerModule extends ExpressModule implements HttpServerModuleI
     return Observable.create((observer) => {
       observer.next('HttpServer::Close');
       try {
-          /* istanbul ignore next */
-          this._httpServer.once('close', () => {
-            observer.next('HttpServer::Destroyed');
-            observer.complete();
-          });
+        /* istanbul ignore next */
+        this._httpServer.once('close', () => {
+          observer.next('HttpServer::Destroyed');
+          observer.complete();
+        });
 
-          this._httpServer.close();
-        } catch(err) {
-          observer.error(err);
-        }
+        this._httpServer.close();
+      } catch(err) {
+        observer.error(err);
+      }
     });
   }
 
