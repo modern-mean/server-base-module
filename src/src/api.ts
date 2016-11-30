@@ -1,7 +1,7 @@
 import { RouterModule, RouterInterface, MiddlewareInterface, RouterConfigInterface } from './router';
-import { isConfig, ModuleConfig } from './base';
+import { ModuleConfig } from './base';
 import * as express from 'express';
-import { Observable, Observer } from '@reactivex/rxjs';
+import { Observable } from '@reactivex/rxjs';
 
 //Default Middleware
 import * as cors from 'cors';
@@ -68,7 +68,6 @@ export interface ApiVersionRouterInterface extends ApiRouterInterface {
 export class ApiVersionRouter extends ApiRouter {
 
   private _baseRouter: express.Router = express.Router();
-  private saveFunc;
 
   constructor(...args) {
 

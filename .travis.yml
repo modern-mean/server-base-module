@@ -1,14 +1,18 @@
 language: node_js
 sudo: false
 node_js:
-- 6.4
+  - 6.4
+
+services:
+  - mongodb
 
 before_install:
-- npm i nsp -g
+  - npm i nsp -g
 
 after_script:
-- nsp audit-package
-- npm run coverage
+  - nsp audit-package
+  - npm run coverage
+
 notifications:
   webhooks:
     urls:

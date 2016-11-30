@@ -1,7 +1,6 @@
 import * as test from 'blue-tape';
 import * as moduleTest from '../src/http';
 import { Observable } from '@reactivex/rxjs';
-import * as http from 'http';
 
 test('http.ts export HttpServerModule', (assert) => {
   assert.notEqual(moduleTest.HttpServerModule, undefined, 'Should not be undefined');

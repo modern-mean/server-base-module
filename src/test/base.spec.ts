@@ -1,6 +1,4 @@
 import * as test from 'blue-tape';
-import * as sinon from 'sinon';
-import * as winston from 'winston';
 import * as Rx from '@reactivex/rxjs';
 import * as moduleTest from '../src/base';
 

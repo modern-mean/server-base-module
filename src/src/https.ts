@@ -1,5 +1,3 @@
-import { ModuleConfig } from './base';
-import { MiddlewareInterface } from './router';
 import { HttpServerModule, HttpServerModuleInterface, HttpServerConfigInterface } from './http';
 import * as https from 'https';
 import { Observable } from '@reactivex/rxjs';

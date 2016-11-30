@@ -3,7 +3,7 @@ import * as express from 'express';
 import * as sinon from 'sinon';
 import * as Rx from '@reactivex/rxjs';
 import * as moduleTest from '../src/router';
-import { isConfig, ModuleConfig } from '../src/base';
+import { isConfig } from '../src/base';
 
 //All setup globals
 let childRouter1, childRouterConfig1, childRouter2, childRouterConfig2, childRouter3, childRouterConfig3,
@@ -115,7 +115,7 @@ test('router.ts constructor with no config', (assert) => {
 
 test('router.ts constructor with middleware and router args', (assert) => {
   let args = setupFullTest();
-  let mod = new moduleTest.RouterModule(...args);
+  new moduleTest.RouterModule(...args);
   assert.equal(childRouter1.toMiddleware.called, false, 'should not call childRouter.toMiddleware()');
   assert.equal(router.use.called, false, 'should not call router use');
   sandbox.restore();

@@ -1,6 +1,5 @@
 import * as test from 'blue-tape';
 import * as sinon from 'sinon';
-import * as Rx from '@reactivex/rxjs';
 import * as mongoose from 'mongoose';
 import * as moduleTest from '../src/mongoose';
 
@@ -38,7 +37,6 @@ test('mongoose.ts connect()', (assert) => {
 
 test('mongoose.ts connect() already connected', (assert) => {
   let mod = new moduleTest.MongooseModule();
-  let config = mod.getMongooseConfig();
 
   //execute
   mod.connect()

@@ -1,7 +1,5 @@
 import * as test from 'blue-tape';
-import * as sinon from 'sinon';
 import * as request from 'supertest';
-import * as Rx from '@reactivex/rxjs';
 import * as moduleTest from '../src/api';
 import { RouterModule } from '../src/router';
 import { ExpressModule } from '../src/express';
@@ -54,10 +52,7 @@ test('api.ts ApiRouter constructor middleware arguments', (assert) => {
     name: 'testmiddleware',
     middleware: function (req, res, next) {}
   };
-  let duplicateMiddleware = {
-    name: 'cors',
-    middleware: function (req, res, next) {}
-  };
+
   let mod = new moduleTest.ApiRouter(middleware);
   mod.getMiddleware().count().subscribe(i => assert.equal(i, 3, 'should have 3 middlewares because one passed in is a duplicate of a default middleware'));
   assert.end();
@@ -114,7 +109,6 @@ test('api.ts ApiVersion supertest', (assert) => {
   process.env.API_SSL_DISABLE = '1';
   process.env.API_CORS_DISABLE = '1';
 
-  let config = moduleTest.apiRouterDefaultConfig();
   let mod = new moduleTest.ApiRouter(createChildRouter());
   let app = new ExpressModule(mod);
   app.enableExpress().subscribe();
@@ -140,7 +134,7 @@ test('api.ts ApiVersionRouter supertest', (assert) => {
 
   process.env.API_SSL_DISABLE = '1';
   process.env.API_CORS_DISABLE = '1';
-  let config = moduleTest.apiRouterDefaultConfig();
+
   let crouter = createChildRouter();
   crouter.getRouter().get('/vtest', (req: moduleTest.ApiRequest, res) => {
     res.json('vtest: ' + req.apiversion);
