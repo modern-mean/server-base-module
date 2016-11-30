@@ -14,10 +14,10 @@ export interface HttpsServerConfigInterface extends HttpServerConfigInterface {
 }
 
 export interface HttpsServerModuleInterface extends HttpServerModuleInterface {
-  httpsListen(): Observable<string>,
-  httpsClose(): Observable<string>,
+  httpsListen(): Observable<void>,
+  httpsClose(): Observable<void>,
   getHttpsServer(): https.Server,
-  getHttpsConfig(): HttpsServerConfigInterface
+  getHttpsServerConfig(): HttpsServerConfigInterface
 }
 
 export class HttpsServerModule extends HttpServerModule implements HttpsServerModuleInterface {
@@ -27,15 +27,18 @@ export class HttpsServerModule extends HttpServerModule implements HttpsServerMo
 
   constructor(...args) {
 
-    super(...args);
+    super(httpsServerDefaultConfig(), ...args);
 
-    this._httpsConfig = httpsServerDefaultConfig();
+    let configObserver = {
+      next: config => this._httpsConfig = config,
+      error: err => this.logger.error('HttpsServerModule::Constructor::Configure', err),
+      complete: () => this.logger.debug('HttpsServerModule::Constructor::Configure::Done')
+    };
 
-    //subscribe to config
-    let configSub = this.config
+    this.config
       .filter(config => config.module === 'httpsserver')
-      .subscribe(config => this._httpsConfig = config);
-    this.subscriptions.next(configSub);
+      .takeLast(1)
+      .subscribe(configObserver);
 
   }
 
@@ -43,29 +46,29 @@ export class HttpsServerModule extends HttpServerModule implements HttpsServerMo
     return this._httpsServer;
   }
 
-  getHttpsConfig(): HttpsServerConfigInterface {
+  getHttpsServerConfig(): HttpsServerConfigInterface {
     return this._httpsConfig;
   }
 
-  httpsListen(): Observable<string> {
+  httpsListen(): Observable<void> {
     let observe = Observable.create((observer) => {
       try {
-        observer.next('HttpsServer::Read certificates');
+        this.logger.debug('HttpsServer::Read certificates', this._httpsConfig.options.options);
         this._httpsConfig.options.options.key = fs.readFileSync(this._httpsConfig.options.options.key);
         this._httpsConfig.options.options.cert = fs.readFileSync(this._httpsConfig.options.options.cert);
 
-        observer.next('HttpServer::Create');
+        this.logger.debug('HttpsServer::Create');
         this._httpsServer = https.createServer(this._httpsConfig.options.options, this.getExpressApp());
 
-        observer.next('HttpServer::Starting');
+
         /* istanbul ignore next */
         this._httpsServer.once('error', err => {
           observer.error(err);
         });
 
+        this.logger.debug('HttpsServer::Listen');
         this._httpsServer.listen(this._httpsConfig.options, () => {
-          observer.next('HttpServer::Listening');
-          this.logger.info(`HTTP Server:     ${this._httpsServer.address().address}:${this._httpsServer.address().port}`);
+          this.logger.info(`HTTPS Server:     ${this._httpsServer.address().address}:${this._httpsServer.address().port}`);
           observer.complete();
         });
       } catch(err) {
@@ -77,13 +80,13 @@ export class HttpsServerModule extends HttpServerModule implements HttpsServerMo
 
   }
 
-  httpsClose(): Observable<string> {
+  httpsClose(): Observable<void> {
     let observe = Observable.create((observer) => {
-      observer.next('HttpServer::Close');
+      this.logger.debug('HttpsServer::Close');
       try {
         /* istanbul ignore next */
         this._httpsServer.once('close', () => {
-          observer.next('HttpServer::Destroyed');
+          this.logger.debug('HttpsServer::Closed');
           observer.complete();
         });
 

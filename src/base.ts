@@ -8,46 +8,34 @@ export interface ModuleConfig {
 }
 
 export interface ServerModuleInterface {
-  config: Rx.ReplaySubject<ModuleConfig>,
-  subscriptions: Rx.Subject<Rx.Subscription>,
-  done(): void,
+
   getLogger(): winston.LoggerInstance,
-  getSubscriptions(): Rx.Subscription[]
+  getConfig(): Rx.Observable<ModuleConfig>
+
 }
 
 export class ServerModule implements ServerModuleInterface {
 
-  public config: Rx.ReplaySubject<ModuleConfig> = new Rx.ReplaySubject<ModuleConfig>(50);
-  public subscriptions: Rx.Subject<Rx.Subscription> = new Rx.Subject<Rx.Subscription>();
+  protected config: Rx.Observable<ModuleConfig>;
   protected logger: winston.LoggerInstance;
-  private _subscriptions: Rx.Subscription[] = [];
+
 
   constructor(...args) {
 
-    //Subscribe to subscriptions.  Funny I know
-    let mainSub = this.subscriptions.subscribe(sub => this._subscriptions.push(sub));
-    this.subscriptions.next(mainSub);
 
-    //Default Logger
-    this.logger = new winston.Logger({
-      level: process.env.LOGGERMODULE_LEVEL || 'info'
-    });
+    //Setup config Observable
+    this.config = Rx.Observable.from([ loggerDefaultConfig(), ...args ])
+      .filter(arg => isConfig(arg));
 
-    //Logger Subscription
-    this.subscriptions.next(
-      this.config
-        .filter(config => config.module === 'winston')
-        .pluck('options')
-        .subscribe(config => {
-          this.logger.debug('Logger Reconfigure::', config);
-          this.logger.configure(config);
-        })
-    );
 
-    //Call config.next for any configurations passed in.
-    Rx.Observable.from(args)
-      .filter(arg => arg.type === 'config')
-      .subscribe(config => this.config.next(config));
+
+    //Create Logger
+    this.config
+      .filter(config => config.module === 'winston')
+      .takeLast(1)
+      .subscribe(config => {
+        this.logger = new winston.Logger(config.options);
+      });
 
   }
 
@@ -55,13 +43,29 @@ export class ServerModule implements ServerModuleInterface {
     return this.logger;
   }
 
-  getSubscriptions(): Rx.Subscription[] {
-    return this._subscriptions;
+  getConfig(): Rx.Observable<ModuleConfig> {
+    return this.config;
   }
 
-  done(): void {
-    Rx.Observable.from(this._subscriptions)
-      .subscribe(sub => sub.unsubscribe());
+}
+
+export function isConfig(config: any): config is ModuleConfig {
+  if (typeof config !== 'object' || !config.module || config.type !== 'config' || !config.options) {
+    return false;
   }
 
+  return true;
+}
+
+export function loggerDefaultConfig() {
+  return {
+    module: 'winston',
+    type: 'config',
+    options: {
+      level: process.env.LOGGER_LEVEL || 'info',
+      transports: [
+        process.env.LOGGER_CONSOLE_DISABLE ? undefined : new (winston.transports.Console)()
+      ]
+    }
+  };
 }

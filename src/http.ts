@@ -11,29 +11,33 @@ export interface HttpServerConfigInterface extends ModuleConfig {
 }
 
 export interface HttpServerModuleInterface extends ExpressModuleInterface {
-  httpListen(): Observable<string>,
-  httpClose(): Observable<string>,
+  httpListen(): Observable<void>,
+  httpClose(): Observable<void>,
   getHttpServer(): http.Server,
-  getConfig(): HttpServerConfigInterface
+  getHttpServerConfig(): HttpServerConfigInterface
 }
 
 export class HttpServerModule extends ExpressModule implements HttpServerModuleInterface {
 
   private _httpServer: http.Server;
-  private _httpConfig: HttpServerConfigInterface;
+  private _httpConfig: ModuleConfig;
 
   constructor(...args) {
 
-    super(...args);
+    super(httpServerDefaultConfig(), ...args);
 
-    this._httpConfig = httpServerDefaultConfig();
     this._httpServer = http.createServer(this.getExpressApp());
 
-    //subscribe to config
-    let configSub = this.config
+    let configObserver = {
+      next: config => this._httpConfig = config,
+      error: err => this.logger.error('HttpServerModule::Constructor::Configure', err),
+      complete: () => this.logger.debug('HttpServerModule::Constructor::Configure::Done')
+    };
+
+    this.config
       .filter(config => config.module === 'httpserver')
-      .subscribe(config => this._httpConfig = config);
-    this.subscriptions.next(configSub);
+      .takeLast(1)
+      .subscribe(configObserver);
 
   }
 
@@ -41,22 +45,20 @@ export class HttpServerModule extends ExpressModule implements HttpServerModuleI
     return this._httpServer;
   }
 
-  getConfig(): HttpServerConfigInterface {
+  getHttpServerConfig(): HttpServerConfigInterface {
     return this._httpConfig;
   }
 
-  httpListen(): Observable<string> {
-    return Observable.create((observer) => {
+  httpListen(): Observable<void> {
+    let listen = Observable.create((observer) => {
       try {
-
-        observer.next('HttpServer::Starting');
+        this.logger.debug('HttpServer::Listen::Start');
         /* istanbul ignore next */
         this._httpServer.once('error', err => {
           observer.error(err);
         });
 
         this._httpServer.listen(this._httpConfig.options, () => {
-          observer.next('HttpServer::Listening');
           this.logger.info(`HTTP Server:     ${this._httpServer.address().address}:${this._httpServer.address().port}`);
           observer.complete();
         });
@@ -64,15 +66,17 @@ export class HttpServerModule extends ExpressModule implements HttpServerModuleI
         observer.error(err);
       }
     });
+
+    return this.enableExpress().concat(listen);
   }
 
-  httpClose(): Observable<string> {
+  httpClose(): Observable<void> {
     return Observable.create((observer) => {
-      observer.next('HttpServer::Close');
+      this.logger.debug('HttpServer::Close::Start');
       try {
         /* istanbul ignore next */
         this._httpServer.once('close', () => {
-          observer.next('HttpServer::Destroyed');
+          this.logger.debug('HttpServer::Close::Done');
           observer.complete();
         });
 

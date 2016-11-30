@@ -46,10 +46,10 @@ test('https.ts listen/close default config', (assert) => {
 });
 
 test('https.ts listen/close custom config', (assert) => {
-  let mod = new moduleTest.HttpsServerModule();
   let config = moduleTest.httpsServerDefaultConfig();
   config.options.port = '8444';
-  mod.config.next(config);
+  let mod = new moduleTest.HttpsServerModule(config);
+
   let assertListen = new Observable(observer => {
     assert.equal(mod.getHttpsServer().address().port, 8444, 'https server should be listening on custom port');
     observer.complete();

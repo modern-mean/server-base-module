@@ -1,55 +1,71 @@
 import { ServerModule, ServerModuleInterface } from './base';
-import { RouterModule, MiddlewareInterface, isMiddleware } from './router';
+import { RouterModule, MiddlewareInterface, isMiddleware, isRouter } from './router';
 import * as express from 'express';
 import * as Rx from '@reactivex/rxjs';
 
+//Default middleware
+import * as helmet from 'helmet';
+import * as morgan from 'morgan';
+
 export interface ExpressModuleInterface extends ServerModuleInterface {
-  middleware: Rx.Subject<MiddlewareInterface>,
-  routers: Rx.Subject<RouterModule>,
-  getExpressApp(): express.Application,
-  getRouters(): RouterModule[]
+  getExpressApp(): express.Application
 }
 
 export class ExpressModule extends ServerModule implements ExpressModuleInterface {
 
-  public middleware: Rx.Subject<MiddlewareInterface> = new Rx.Subject<MiddlewareInterface>();
-  public routers: Rx.Subject<RouterModule> = new Rx.Subject<RouterModule>();
+  protected middleware: Rx.Observable<MiddlewareInterface>;
+  protected routers: Rx.Observable<RouterModule>;
   private _app: express.Application = express();
-  private _routers: RouterModule[] = [];
 
   constructor(...args) {
 
     super(...args);
 
-    //Subscribe to routers and push to array
-    this.subscriptions.next(
-      this.routers
-        .filter(arg => arg instanceof RouterModule)
-        .subscribe(
-          router => this._routers.push(router)
-        )
-    );
+    //Middleware Observable
+    this.middleware = Rx.Observable.from(args)
+      .filter(isMiddleware)
+      .concat(expressDefaultMiddleware());
 
-    //Subscribe to middleware and call app.use
-    this.subscriptions.next(
-      this.middleware
-        .filter(mid => isMiddleware(mid))
-        .distinctKey('name')
-        .subscribe(mid => mid.route ? this._app.use(mid.route, mid.middleware): this._app.use(mid.middleware))
-    );
+    //Routers Observable
+    this.routers = Rx.Observable.from(args)
+      .filter(isRouter);
+  }
 
-    Rx.Observable.from(args)
-      .filter(arg => arg instanceof RouterModule)
-      .subscribe(router => this.routers.next(router));
+  enableExpress(): Rx.Observable<void> {
 
+    return this.middleware
+      .concat(this.routers.map(arg => arg.toMiddleware()))
+      .distinct(arg => arg.name)
+      .do(mid => this.logger.debug('Express::Middleware::Enabled', { name: mid.name, route: mid.route }))
+      .map(mid => mid.route ? this._app.use(mid.route, mid.middleware) : this._app.use(mid.middleware))
+      .map(mid => undefined);
   }
 
   getExpressApp(): express.Application {
     return this._app;
   }
 
-  getRouters(): RouterModule[] {
-    return this._routers;
-  }
-
 }
+
+export function expressDefaultMiddleware(): Rx.Observable<MiddlewareInterface> {
+  return new Rx.Observable(observer => {
+    if(!process.env.EXPRESS_HELMET_DISABLE) {
+      observer.next({
+        name: 'helmet',
+        middleware: helmet()
+      });
+    }
+
+    if(!process.env.EXPRESS_MORGAN_DISABLE) {
+      observer.next({
+        name: 'morgan',
+        middleware: morgan(process.env.EXPRESSMODULE_MORGAN_FORMAT || 'short')
+      });
+    }
+
+
+
+    observer.complete();
+  });
+}
+

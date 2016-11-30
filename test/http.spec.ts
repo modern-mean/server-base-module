@@ -10,10 +10,7 @@ test('http.ts export HttpServerModule', (assert) => {
 
 test('http.ts constructor', (assert) => {
   let mod = new moduleTest.HttpServerModule();
-
   assert.equal(typeof mod.getHttpServer().listen, 'function', 'create http server instance');
-
-
   assert.end();
 });
 
@@ -42,10 +39,10 @@ test('http.ts listen/close default config', (assert) => {
 });
 
 test('http.ts listen/close custom config', (assert) => {
-  let mod = new moduleTest.HttpServerModule();
   let config = moduleTest.httpServerDefaultConfig();
   config.options.port = '8081';
-  mod.config.next(config);
+  let mod = new moduleTest.HttpServerModule(config);
+
   let assertListen = new Observable(observer => {
     assert.equal(mod.getHttpServer().listening, true, 'http server should be listening');
     assert.equal(mod.getHttpServer().address().port, 8081, 'http server should be listening on custom port');
