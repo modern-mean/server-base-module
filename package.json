@@ -16,13 +16,13 @@
     "coverage": "cat ./coverage/lcov.info | coveralls",
     "build": "rm -rf ./dist && tsc",
     "build:watch": "rm -rf ./dist && tsc --watch",
-    "lint": "eslint ./test/**/*.ts ./src/**/*.ts",
+    "lint": "eslint ./src/**/*.ts",
     "postversion": "git push && git push --tags && npm publish --access public",
     "release:patch": "npm test && npm run build && npm version patch",
     "release:minor": "npm test && npm run build && npm version minor",
     "release:major": "npm test && npm run build && npm version major",
     "release:quick": "npm test && npm run build && git add -A && git commit -m 'Quick Release Patch' && npm version patch",
-    "test": "rm -rf /coverage && ts-node ./node_modules/.bin/istanbul cover -e .ts --print both ./node_modules/.bin/blue-tape -- \"test/**/*.spec.ts\" | tap-spec && npm run lint"
+    "test": "rm -rf /coverage && ts-node ./node_modules/.bin/istanbul cover -e .ts --print both ./node_modules/.bin/blue-tape -- \"src/test/**/*.spec.ts\" | tap-spec && npm run lint"
   },
   "repository": {
     "type": "git",

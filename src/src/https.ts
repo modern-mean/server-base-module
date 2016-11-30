@@ -109,8 +109,8 @@ export function httpsServerDefaultConfig(): HttpsServerConfigInterface {
       host: process.env.SERVER_HTTPS_HOST || '0.0.0.0',
       port: process.env.SERVER_HTTPS_PORT || '8443',
       options: {
-        key: process.env.SERVER_HTTPS_KEY || process.cwd() + '/ssl/key.pem',
-        cert: process.env.SERVER_HTTPS_CERT || process.cwd() + '/ssl/cert.pem'
+        key: process.env.SERVER_HTTPS_KEY || __dirname + '/../../ssl/key.pem',
+        cert: process.env.SERVER_HTTPS_CERT || __dirname + '/../../ssl/cert.pem'
       }
     }
   };
